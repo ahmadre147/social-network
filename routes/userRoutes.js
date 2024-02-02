@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const usersCtrl = require('../controllers/usersController.js');
-const postsCtrl = require('../controllers/postsController');
+const postsCtrl = require('../controllers/postsController.js');
 
 const { check, validationResult } = require('express-validator');
 
 // Users routes  
 router.post('/users', [
-                check('name')
+                check('username')
                     .exists()
-                    .withMessage('Name is required'),
+                    .withMessage('Username is required'),
                 check('email')
                     .isEmail() 
                     .withMessage('Invalid email'),
