@@ -11,9 +11,9 @@ const { auth } = require('../config/auth.js').auth;
   
 // Users routes  
 router.post('/users', [
-                check('username')
+                check('name')
                     .exists()
-                    .withMessage('Username is required'),
+                    .withMessage('Name is required'),
                 check('email')
                     .isEmail() 
                     .withMessage('Invalid email'),
@@ -38,7 +38,7 @@ router.post('/users/follow-request/:id', usersCtrl.followRequest);
 router.post('/users/accept-request/:id', usersCtrl.acceptRequest);
 
 // Posts routes
-router.get('/posts', postsCtrl.getPosts);
+router.post('/get-posts', postsCtrl.getPosts);
 
 router.post('/posts', [
                 check('title')
