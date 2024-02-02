@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const config = require('./config/db');
 
 const userRoutes = require('./routes/userRoutes');
@@ -11,7 +12,7 @@ mongoose.connect(config.db);
 
 // Enable req.body parsing
 app.use(express.json());
-
+app.use(cors());
 // Use API routes
 app.use('/api', userRoutes);
 

@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken'); 
 const config = require('../config/auth');
+const bcrypt = require('bcrypt');
+const { validationResult } = require('express-validator');
 
 module.exports.register = async (req, res) => {
     const errors = validationResult(req);
@@ -8,7 +10,7 @@ module.exports.register = async (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
     
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
     
     try {
         // Check if user exists
@@ -19,7 +21,7 @@ module.exports.register = async (req, res) => {
 
         // Insert user
         user = new User({
-            name, 
+            username, 
             email,
             password 
         });
@@ -75,7 +77,7 @@ module.exports.login = async (req, res) => {
             }
         };
 
-        jwt.sign(payload, jwtSecret, {expiresIn: 0}, 
+        jwt.sign(payload, config.jwtSecret, {expiresIn: 0}, 
         (err, token) => {
             if(err) throw err;
             res.json({token});
