@@ -5,7 +5,10 @@ const usersCtrl = require('../controllers/usersController.js');
 const postsCtrl = require('../controllers/postsController.js');
 
 const { check, validationResult } = require('express-validator');
-
+  
+// Import this middleware
+const { auth } = require('../config/auth.js').auth;
+  
 // Users routes  
 router.post('/users', [
                 check('username')
@@ -28,8 +31,28 @@ router.post('/users/login', [
                 .withMessage('Password is required')
             ], usersCtrl.login);
 
+router.post('/users/block/:id', usersCtrl.blockUser);
+
+router.post('/users/follow-request/:id', usersCtrl.followRequest);
+
+router.post('/users/accept-request/:id', usersCtrl.acceptRequest);
+
 // Posts routes
-router.get('/posts', postsCtrl.getPosts); 
-router.post('/posts', postsCtrl.createPost);
+router.get('/posts', postsCtrl.getPosts);
+
+router.post('/posts', [
+                check('title')
+                .exists()
+                .withMessage('Title is required'),
+                check('body')
+                .exists()
+                .withMessage('Body is required')
+            ], postsCtrl.createPost);
+
+router.delete('/posts/:id', postsCtrl.deletePost);
+
+router.get('/posts/:id', postsCtrl.getUserPosts);
+
+router.post('/posts/:id/comments', postsCtrl.createComment);
 
 module.exports = router;

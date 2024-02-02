@@ -87,4 +87,91 @@ module.exports.login = async (req, res) => {
         console.error(err);
         res.status(500).send('Server error'); 
     }
-  };
+};
+
+module.exports.followRequest = async (req, res) => {
+    try {
+      const userToRequest = await User.findById(req.params.id);
+  
+      // Check user exists
+      if(!userToRequest) {
+        return res.status(404).json({msg: 'User not found'});
+      }
+      
+      // Make sure not already sent request
+      if(userToRequest.followerRequests.includes(req.user.id)) {
+        return res.status(400).json({msg: 'Request already sent'});
+      }
+  
+      // Add follower request
+      userToRequest.followerRequests.push(req.user.id);
+  
+      await userToRequest.save();
+  
+      res.json({msg: 'Request sent successfully'});
+  
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+};
+
+module.exports.acceptRequest = async (req, res) => {
+    try {
+  
+      const userToAccept = await User.findById(req.params.id); 
+      
+      // Remove from follower requests
+      const removeIndex = userToAccept.followerRequests.indexOf(req.user.id);
+      userToAccept.followerRequests.splice(removeIndex, 1);
+  
+      await userToAccept.save();
+  
+      // Add as a follower
+      userToAccept.followers.push(req.user.id);
+      await userToAccept.save();
+  
+      // Add user to current user's following list
+      req.user.following.push(userToAccept.id);
+      await req.user.save();
+  
+      res.json({msg: 'Follow request accepted'});
+  
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+};
+
+module.exports.blockUser = async (req, res) => {
+    try {
+        const userToBlock = await User.findById(req.params.id);
+
+        // Check if user exists
+        if (!userToBlock) {
+        return res.status(404).json({ msg: 'User not found'});
+        }
+
+        // Check if already blocked
+        if(req.user.blocked.includes(req.params.id)) {
+        return res.status(400).json({ msg: 'User already blocked'});
+        }
+    
+        // Remove from followers
+        const removeIndex = userToBlock.followers.indexOf(req.user.id);
+        userToBlock.followers.splice(removeIndex, 1);
+        await userToBlock.save();
+
+        // Add user to blocked  
+        req.user.blocked.push(userToBlock.id);
+        const removeIndex2 = req.user.followers.indexOf(userToBlock);
+        req.user.followers.splice(removeIndex2, 1)
+        await req.user.save();
+        
+        res.json({ msg: 'User blocked successfully' });
+  
+    } catch (err) {
+       console.error(err);
+       res.status(500).send('Server Error');
+    }  
+};
