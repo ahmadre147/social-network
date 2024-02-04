@@ -2,7 +2,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     event.preventDefault();
 
     const email = document.getElementById('email').value;
-    const username = document.getElementById('username').value;
+    const name = document.getElementById('name').value;
     const password = document.getElementById('password').value;
 
     // Implement AJAX or Fetch to send registration data to the backend
@@ -12,7 +12,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, username, password })
+        body: JSON.stringify({ email, name, password })
     })
     .then(response => response.json())
     .then(data => {

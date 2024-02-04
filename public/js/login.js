@@ -4,8 +4,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Implement AJAX or Fetch to send login data to the backend
-    // Example using Fetch API:
     fetch('http://localhost:3000/api/users/login', {
         method: 'POST',
         headers: {
@@ -15,8 +13,17 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
     .then(response => response.json())
     .then(data => {
-        // Handle the token received, e.g., store it in localStorage
-        alert('Login successful'); 
+        if (data.token) {
+            // Save the token to localStorage for future API requests
+            localStorage.setItem('token', data.token);
+            console.log(data.user.id);
+            localStorage.setItem('userId', data.user.id);
+
+            // Redirect to the feed page
+            window.location.href = 'feed.html';
+        } else {
+            alert('Login failed. Please check your credentials.');
+        }
     })
     .catch(error => console.error('Error:', error));
 });

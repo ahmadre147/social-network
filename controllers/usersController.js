@@ -10,7 +10,7 @@ module.exports.register = async (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
     
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
     
     try {
         // Check if user exists
@@ -21,7 +21,7 @@ module.exports.register = async (req, res) => {
 
         // Insert user
         user = new User({
-            username, 
+            name, 
             email,
             password 
         });
@@ -32,7 +32,14 @@ module.exports.register = async (req, res) => {
 
         await user.save();
 
-        res.json({ msg: 'Registration successful' });
+        // Send user information in the response
+        const userInfo = {
+            id: user.id,
+            name: user.name,
+            email: user.email
+        };
+
+        res.json({ msg: 'Registration successful', user: userInfo });
 
     } catch (err) {
         console.error(err);
@@ -56,18 +63,18 @@ module.exports.login = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-        return res.status(400).json({
-            message: 'User does not exist'
-        });
+            return res.status(400).json({
+                message: 'User does not exist'
+            });
         }
 
         // Validate password  
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-        return res.status(400).json({
-            message: 'Incorrect password'
-        });
+            return res.status(400).json({
+                message: 'Incorrect password'
+            });
         }
 
         // Sign JWT token
@@ -78,16 +85,26 @@ module.exports.login = async (req, res) => {
         };
 
         jwt.sign(payload, config.jwtSecret, {expiresIn: 0}, 
-        (err, token) => {
-            if(err) throw err;
-            res.json({token});
-        });
+            (err, token) => {
+                if(err) throw err;
+
+                // Send user information in the response
+                const userInfo = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                };
+                console.log(userInfo);
+                res.json({token, user: userInfo});
+            }
+        );
 
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error'); 
     }
 };
+
 
 module.exports.followRequest = async (req, res) => {
     try {
