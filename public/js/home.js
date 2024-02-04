@@ -85,3 +85,22 @@ function getPosts() {
     .catch(error => console.error('Error:', error));
 }
 
+// Function to delete a post
+function deletePost(postId) {
+    fetch(`http://localhost:3000/api/posts/${postId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response as needed (e.g., show a success message)
+        console.log(data.msg);
+
+        // Refresh the posts after deletion
+        getPosts();
+    })
+    .catch(error => console.error('Error:', error));
+}
