@@ -20,20 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const body = document.getElementById('body').value;
         const photo = document.getElementById('photo').value;
     
-        // Retrieve user ID from localStorage
-        const postedBy = localStorage.getItem('userId');
-    
-        // Ensure user ID is available
-        if (!postedBy) {
-            alert('User ID not found. Please log in.');
-            return;
-        }
-    
         const postData = {
             title,
             body,
-            photo,
-            postedBy
+            photo
         };
     
         // Send the post data to the server
@@ -41,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                
             },
             body: JSON.stringify(postData)
         })
@@ -63,21 +53,19 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getPosts() {
-    // Fetch user ID from localStorage
-    const userId = localStorage.getItem('userId');
-
+    console.log("here");
     // Fetch posts from the backend
-    fetch('/api/posts', {
+    fetch('http://localhost:3000/api/get-posts', {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'), // Assume token is stored in localStorage after login
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userId }) // Include the user ID in the request body
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        }
     })
     .then(response => response.json())
     .then(data => {
         // Assume data is an array of post objects
+        console.log("here2");
         const postsContainer = document.getElementById('postsContainer');
 
         // Clear previous posts

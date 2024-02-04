@@ -1,16 +1,11 @@
 // Add this function to fetch and display the list of users
 function getUsersList() {
-    const postData = {
-        userId : localStorage.getItem('userId')
-    } 
-    
     fetch('http://localhost:3000/api/users-list', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': localStorage.getItem('token')
-        },
-        body: JSON.stringify(postData)
+        }
     })
     .then(response => response.json())
     .then(data => {

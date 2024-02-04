@@ -31,7 +31,7 @@ router.post('/users/login', [
                 .withMessage('Password is required')
             ], usersCtrl.login);
 
-router.post('/users-list', usersCtrl.getUsers);
+router.post('/users-list', auth, usersCtrl.getUsers);
 
 router.post('/users/block/:id', auth, usersCtrl.blockUser);
 
@@ -40,9 +40,9 @@ router.post('/users/follow-request/:id', auth, usersCtrl.followRequest);
 router.post('/users/accept-request/:id', usersCtrl.acceptRequest);
 
 // Posts routes
-router.post('/get-posts', postsCtrl.getPosts);
+router.get('/get-posts', auth, postsCtrl.getPosts);
 
-router.post('/posts', [
+router.post('/posts', auth, [
                 check('title')
                 .exists()
                 .withMessage('Title is required'),

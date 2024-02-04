@@ -195,7 +195,7 @@ module.exports.blockUser = async (req, res) => {
 module.exports.getUsers = async (req, res) => {
     try {
         // Exclude the current user from the list
-        const users = await User.find({ _id: { $ne: req.body.userId } }, 'name profilePic');
+        const users = await User.find({ _id: { $ne: req.user.id } }, 'name profilePic');
         res.json(users);
     } catch (err) {
         console.error(err);
