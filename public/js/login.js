@@ -18,8 +18,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             localStorage.setItem('token', data.token);
             localStorage.setItem('userId', data.user.id);
 
-            // Redirect to the feed page
-            window.location.href = 'feed.html';
+            // Redirect to the home page
+            window.location.href = 'home.html';
         } else {
             alert('Login failed. Please check your credentials.');
         }

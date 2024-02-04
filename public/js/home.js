@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify(postData)
         })
@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getPosts() {
-    console.log("here");
     // Fetch posts from the backend
     fetch('http://localhost:3000/api/get-posts', {
         method: 'GET',
@@ -65,7 +64,6 @@ function getPosts() {
     .then(response => response.json())
     .then(data => {
         // Assume data is an array of post objects
-        console.log("here2");
         const postsContainer = document.getElementById('postsContainer');
 
         // Clear previous posts
@@ -79,9 +77,11 @@ function getPosts() {
                 <h3>${post.title}</h3>
                 <p>${post.body}</p>
                 <p>Posted by: ${post.postedBy.name}</p>
+                ${post.photo ? `<img src="${post.photo}" alt="Post Image">` : ''}
             `;
             postsContainer.appendChild(postElement);
         });
     })
     .catch(error => console.error('Error:', error));
 }
+
