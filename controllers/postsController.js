@@ -86,11 +86,11 @@ module.exports.deletePost = async (req, res) => {
       return res.status(401).json({msg: 'User not authorized'});
     }
 
-    await post.remove();
+    await post.deleteOne();
 
     res.json({msg: 'Post removed'});
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).send('Server Error');
   }
 };

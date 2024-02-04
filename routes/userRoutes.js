@@ -51,7 +51,7 @@ router.post('/posts', auth, [
                 .withMessage('Body is required')
             ], postsCtrl.createPost);
 
-router.delete('/posts/:id', postsCtrl.deletePost);
+router.delete('/posts/:id', auth, postsCtrl.deletePost);
 
 router.get('/posts/:id', postsCtrl.getUserPosts);
 

@@ -76,8 +76,8 @@ function getPosts() {
             postElement.innerHTML = `
                 <h3>${post.title}</h3>
                 <p>${post.body}</p>
-                <p>Posted by: ${post.postedBy.name}</p>
                 ${post.photo ? `<img src="${post.photo}" alt="Post Image">` : ''}
+                <button class="btn btn-danger" onclick="deletePost('${post._id}')">Delete</button>
             `;
             postsContainer.appendChild(postElement);
         });
