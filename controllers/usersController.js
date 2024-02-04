@@ -84,7 +84,7 @@ module.exports.login = async (req, res) => {
             }
         };
 
-        jwt.sign(payload, config.jwtSecret, {expiresIn: 0}, 
+        jwt.sign(payload, config.jwtSecret, {expiresIn: '24h'}, 
             (err, token) => {
                 if(err) throw err;
 
@@ -163,27 +163,26 @@ module.exports.acceptRequest = async (req, res) => {
 module.exports.blockUser = async (req, res) => {
     try {
         const userToBlock = await User.findById(req.params.id);
-
         // Check if user exists
         if (!userToBlock) {
         return res.status(404).json({ msg: 'User not found'});
         }
-
+        const userInfo = await User.findById(req.user.id);
         // Check if already blocked
-        if(req.user.blocked.includes(req.params.id)) {
+        if(userInfo.blocked.includes(req.params.id)) {
         return res.status(400).json({ msg: 'User already blocked'});
         }
     
         // Remove from followers
-        const removeIndex = userToBlock.followers.indexOf(req.user.id);
+        const removeIndex = userToBlock.followers.indexOf(req.user);
         userToBlock.followers.splice(removeIndex, 1);
         await userToBlock.save();
 
         // Add user to blocked  
-        req.user.blocked.push(userToBlock.id);
-        const removeIndex2 = req.user.followers.indexOf(userToBlock);
-        req.user.followers.splice(removeIndex2, 1)
-        await req.user.save();
+        userInfo.blocked.push(userToBlock.id);
+        const removeIndex2 = userInfo.followers.indexOf(userToBlock);
+        userInfo.followers.splice(removeIndex2, 1)
+        await userInfo.save();
         
         res.json({ msg: 'User blocked successfully' });
   
@@ -191,4 +190,15 @@ module.exports.blockUser = async (req, res) => {
        console.error(err);
        res.status(500).send('Server Error');
     }  
+};
+
+module.exports.getUsers = async (req, res) => {
+    try {
+        // Exclude the current user from the list
+        const users = await User.find({ _id: { $ne: req.body.userId } }, 'name profilePic');
+        res.json(users);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
 };

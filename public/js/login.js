@@ -16,7 +16,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         if (data.token) {
             // Save the token to localStorage for future API requests
             localStorage.setItem('token', data.token);
-            console.log(data.user.id);
             localStorage.setItem('userId', data.user.id);
 
             // Redirect to the feed page

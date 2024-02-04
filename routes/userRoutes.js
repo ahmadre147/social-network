@@ -7,7 +7,7 @@ const postsCtrl = require('../controllers/postsController.js');
 const { check, validationResult } = require('express-validator');
   
 // Import this middleware
-const { auth } = require('../config/auth.js').auth;
+const { auth } = require('../middlewares/auth.js');
   
 // Users routes  
 router.post('/users', [
@@ -31,9 +31,11 @@ router.post('/users/login', [
                 .withMessage('Password is required')
             ], usersCtrl.login);
 
-router.post('/users/block/:id', usersCtrl.blockUser);
+router.post('/users-list', usersCtrl.getUsers);
 
-router.post('/users/follow-request/:id', usersCtrl.followRequest);
+router.post('/users/block/:id', auth, usersCtrl.blockUser);
+
+router.post('/users/follow-request/:id', auth, usersCtrl.followRequest);
 
 router.post('/users/accept-request/:id', usersCtrl.acceptRequest);
 

@@ -2,7 +2,6 @@ const Post = require('../models/post');
 
 module.exports.getPosts = async (req, res) => {
   try {
-    console.log(req.body.userId);
     const posts = await Post.find({ postedBy: req.body.userId })
       .populate('postedBy', 'name profilePic')
       .sort({ createdAt: -1})
@@ -16,7 +15,6 @@ module.exports.getPosts = async (req, res) => {
 };
 
 module.exports.createPost = async (req, res) => {
-  console.log(req.body);
   const { title, body, photo, postedBy } = req.body;
 
   try {
