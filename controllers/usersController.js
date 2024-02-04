@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Post = require('../models/post');
 const jwt = require('jsonwebtoken'); 
 const config = require('../config/auth');
 const bcrypt = require('bcrypt');
@@ -197,6 +198,104 @@ module.exports.getUsers = async (req, res) => {
         // Exclude the current user from the list
         const users = await User.find({ _id: { $ne: req.user.id } }, 'name profilePic');
         res.json(users);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};
+
+
+module.exports.getFollowerRequests = async (req, res) => {
+    try {
+      // Get the logged-in user's follower requests
+      const followerRequests = await User.findById(req.user.id)
+        .populate({
+          path: 'followerRequests',
+          select: 'name profilePic',
+        })
+        .select('followerRequests');
+  
+      res.json(followerRequests.followerRequests);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+  };
+
+  // Accept follower request
+module.exports.acceptFollowerRequest = async (req, res) => {
+    try {
+        const userToAccept = await User.findById(req.user.id);
+
+        // Check if the user to accept exists
+        if (!userToAccept) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+    
+        // Check if the follower request exists
+        console.log(`userToAccept.followerRequests \n ${userToAccept.followerRequests}`);
+        if (!userToAccept.followerRequests.includes(req.params.id)) {
+            return res.status(400).json({ msg: 'Follower request not found' });
+        }
+
+        // Remove the follower request
+        userToAccept.followerRequests = userToAccept.followerRequests.filter(requesterId => requesterId.toString() !== req.params.id);
+
+        // Add the user to followers
+        userToAccept.followers.push(req.params.id);
+
+        await userToAccept.save();
+
+        res.json({ msg: 'Follower request accepted' });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};
+
+// Reject follower request
+module.exports.rejectFollowerRequest = async (req, res) => {
+    try {
+        const userToReject = await User.findById(req.user.id);
+
+        // Check if the user to reject exists
+        if (!userToReject) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Check if the follower request exists
+        if (!userToReject.followerRequests.includes(req.params.id)) {
+            return res.status(400).json({ msg: 'Follower request not found' });
+        }
+
+        // Remove the follower request
+        userToReject.followerRequests = userToReject.followerRequests.filter(requesterId => requesterId.toString() !== req.params.id);
+
+        await userToReject.save();
+
+        res.json({ msg: 'Follower request rejected' });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};
+
+
+module.exports.getUserStatus = async (req, res) => {
+    try {
+        // Get the logged-in user
+        const user = await User.findById(req.user.id);
+
+        // Get followers, following, and posts counts
+        const followersCount = user.followers.length;
+        const followingCount = user.following.length;
+
+        // Get posts count
+        const postsCount = await Post.countDocuments({ postedBy: req.user.id });
+
+        res.json({ followersCount, followingCount, postsCount });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');

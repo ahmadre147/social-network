@@ -32,34 +32,53 @@
         </div>
     </nav>
     
-    
-    
+    <div class="container mt-2 mb-4" style="margin-left: 5px; margin-right: 5px;"> <!-- Decreased side margins -->
+        <div class="row">
+            <div class="col-md-2">
+                <!-- 1st cell: User status -->
+                <h2 class="container-title">Status</h2> <!-- Updated title -->
+                <div id="userStatusContainer">
+                    <!-- User status will be dynamically added here -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- 2nd cell: My Posts -->
+                <h2 class="container-title">My Posts</h2>
+                <div id="postsContainer" class="mb-4">
+                    <!-- Posts will be dynamically added here -->
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- 3rd cell: Follower Requests -->
+                <h2 class="container-title">Follower Requests</h2>
+                <div id="followerRequestsContainer">
+                    <!-- Follower requests will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div id="postsContainer">
-    <!-- Posts will be dynamically added here -->
-</div>
+    <div id="postFormContainer" style="display: none;">
+        <form id="postForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
 
-<div id="postFormContainer" style="display: none;">
-    <form id="postForm">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
+            <label for="body">Body:</label>
+            <textarea id="body" name="body" rows="4" required></textarea>
 
-        <label for="body">Body:</label>
-        <textarea id="body" name="body" rows="4" required></textarea>
+            <label for="photo">Photo URL:</label>
+            <input type="text" id="photo" name="photo" placeholder="Optional: Add a photo URL">
 
-        <label for="photo">Photo URL:</label>
-        <input type="text" id="photo" name="photo" placeholder="Optional: Add a photo URL">
+            <button type="submit" class="btn btn-success">Create Post</button>
+            <button type="button" id="cancelPostButton" class="btn btn-danger">Cancel</button>
+        </form>
+            
+        </form>
+    </div>
 
-        <button type="submit" class="btn btn-success">Create Post</button>
-        <button type="button" id="cancelPostButton" class="btn btn-danger">Cancel</button>
-    </form>
-        
-    </form>
-</div>
-
-<script src="./js/home.js"></script> <!-- Include external JS file -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="./js/home.js"></script> <!-- Include external JS file -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>

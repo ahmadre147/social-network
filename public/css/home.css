@@ -36,6 +36,35 @@ body {
     margin-right: 10px; /* Adjust spacing between items */
 }
 
+.container {
+    margin: 20px auto; /* Adjusted container margins */
+    max-width: 1400px; /* Set maximum container width */
+}
+
+.container-title {
+    border-bottom: 1px solid #ccc; /* Thin gray line under titles */
+    padding-bottom: 5px; /* Added padding below titles */
+    margin-bottom: 20px; /* Added margin below titles */
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjusted gap between columns */
+}
+
+.col-md-4 {
+    flex: 1 0 30%; /* Adjusted width of the first cell */
+}
+
+.col-md-5 {
+    flex: 1 0 50%; /* Adjusted width of the second cell */
+}
+
+.col-md-3 {
+    flex: 1 0 20%; /* Adjusted width of the third cell */
+}
+
 button {
     background-color: #61dafb; /* Blue button color */
     color: #fff; /* Light text color */
@@ -77,4 +106,12 @@ input, textarea {
     padding: 8px;
     margin-bottom: 16px;
     box-sizing: border-box;
+}
+
+.requester-img {
+    width: 40px; /* Adjust the size as needed */
+    height: 40px; /* Adjust the size as needed */
+    border-radius: 50%;
+    border: 2px solid #fff; /* Adjust the border color and thickness as needed */
+    margin-right: 10px; /* Add some spacing between the image and text */
 }

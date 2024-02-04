@@ -55,6 +55,17 @@ router.delete('/posts/:id', auth, postsCtrl.deletePost);
 
 router.get('/posts/:id', postsCtrl.getUserPosts);
 
+router.get('/users/follower-requests', auth, usersCtrl.getFollowerRequests);
+
+
 router.post('/posts/:id/comments', postsCtrl.createComment);
+
+// Accept follower request
+router.post('/users/accept-follower-request/:id', auth, usersCtrl.acceptFollowerRequest);
+
+// Reject follower request
+router.post('/users/reject-follower-request/:id', auth, usersCtrl.rejectFollowerRequest);
+
+router.get('/users/status', auth, usersCtrl.getUserStatus);
 
 module.exports = router;
