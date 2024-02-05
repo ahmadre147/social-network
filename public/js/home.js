@@ -4,9 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fetch and display user status
     getUserStatus();
-
-    // load feed
-    loadFeed();
   
     // Fetch and display follower requests
     getFollowerRequests();
@@ -221,50 +218,3 @@ function getUserStatus() {
     })
     .catch(error => console.error('Error:', error));
 }
-
-function loadFeed() {
-    fetch('http://localhost:3000/api/users/feed', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('token')
-    }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const feedContainer = document.getElementById('feed');
-
-        feedContainer.innerHTML = '';
-
-        data.forEach(post => {
-
-            const postEl = document.createElement('div'); 
-            postEl.className = 'feed-post';
-          
-            postEl.innerHTML = `
-              <div class="header">
-                
-                  <h2 class="title">${post.title}</h4>
-
-              </div>
-              
-              <img src="${post.postedBy.profilePic}" class="profile-pic">
-              <h7>${post.postedBy.name}</h3>
-              
-              <p class="content">
-                ${post.body}
-              </p>
-              
-              ${post.photo ? `<img src="${post.photo}" class="post-image">` : ''}
-              
-              <div class="post-footer">
-                <div class="likes">${post.likes.length} likes</div>
-                <div class="comments">${post.comments.length} comments</div> 
-              </div>
-            `;          
-
-            feedContainer.appendChild(postEl);
-        })
-    });
-}
-  

@@ -58,7 +58,10 @@ router.get('/posts/:id', postsCtrl.getUserPosts);
 router.get('/users/follower-requests', auth, usersCtrl.getFollowerRequests);
 
 
-router.post('/posts/:id/comments', postsCtrl.createComment);
+router.post('/posts/:id/comments', auth, postsCtrl.createComment);
+
+router.get('/posts/:postId/comments', auth, postsCtrl.getComments);
+
 
 // Accept follower request
 router.post('/users/accept-follower-request/:id', auth, usersCtrl.acceptFollowerRequest);
@@ -71,5 +74,7 @@ router.get('/users/status', auth, usersCtrl.getUserStatus);
 router.get('/users/:userId/posts', auth, usersCtrl.followingUserPosts);
 
 router.get('/users/feed', auth, usersCtrl.feed)
+
+router.get('/users/:id/name', usersCtrl.getUserNameById);
 
 module.exports = router;
