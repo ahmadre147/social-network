@@ -83,7 +83,7 @@ function getPosts() {
                 <h3>${post.title}</h3>
                 <p>${post.body}</p>
                 ${post.photo ? `<img src="${post.photo}" alt="Post Image" style="max-width: 100%; height: auto;">` : ''}
-                <button class="btn btn-danger" onclick="deletePost('${post._id}')">Delete</button>
+                <button class="btn btn-danger" style="margin-top: 10px" onclick="deletePost('${post._id}')">Delete</button>
             `;
             postsContainer.appendChild(postElement);
         });

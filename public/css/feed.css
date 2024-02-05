@@ -1,5 +1,10 @@
 body {
-    overflow: hidden; /* Hide scroll bars when the comment box is up */
+    font-family: Arial, sans-serif;
+    background-color: #282c35; /* Dark background color */
+    color: #fff; /* Light text color */
+    height: 100vh;
+    width: 100%;
+    margin: 0;
 }
 
 .feed-post {
@@ -55,4 +60,20 @@ body {
 
 #commentTextLabel {
     color: black;
+}
+
+#username {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+#user-info {
+    margin-bottom: 10px;
+}
+
+#feed {
+    margin: 20px auto; /* Adjusted container margins */
+    max-width: 100%; /* Set maximum container width */
+    padding-top: 80px;
+    max-height: 100vh;
 }

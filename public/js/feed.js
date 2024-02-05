@@ -24,8 +24,10 @@ function loadFeed() {
             const postEl = document.createElement('div');
             postEl.className = 'feed-post';
             postEl.innerHTML = `
-                <img src="${post.postedBy.profilePic || './images/default-profile.jpg'}" class="profile-pic">
-                <h3>${post.postedBy.name}</h3>
+                <div id="user-info">
+                    <img src="${post.postedBy.profilePic || './images/default-profile.jpg'}" class="profile-pic">
+                    <span id="username">${post.postedBy.name}<span>
+                </div>
                 <div class="header">
                     <h2 class="title">${post.title}</h2>
                 </div>
@@ -51,7 +53,7 @@ function loadFeed() {
         feedContainer.style.maxHeight = '100vh'; // You can adjust this value
 
         // Enable overflow and add a scrollbar
-        feedContainer.style.overflowY = 'auto';
+        // feedContainer.style.overflowY = 'auto';
     });
 }
 
