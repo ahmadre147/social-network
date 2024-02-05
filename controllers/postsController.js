@@ -47,32 +47,6 @@ module.exports.createPost = async (req, res) => {
 
 };
 
-module.exports.feed = async (req, res) => {
-  try {
-
-    // Get logged in user
-    const user = await User.findById(req.user.id)
-      .select('-password')
-      .populate('following', 'id name profilePic');
-
-    // Array of users that current user follows
-    const following = user.following; 
-
-    // Fetch posts of the users that current user follows
-    const posts = await Post.find({ 
-      postedBy: { $in: following } 
-    })
-    .sort({createdAt: -1}) // newest first
-    .populate('postedBy', 'id name profilePic');
-
-    res.json(posts);
-
-  } catch(err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-};
-
 module.exports.deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);

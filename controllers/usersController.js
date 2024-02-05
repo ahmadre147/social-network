@@ -244,7 +244,12 @@ module.exports.acceptFollowerRequest = async (req, res) => {
         // Add the user to followers
         userToAccept.followers.push(req.params.id);
 
+        // Add to following list
+        const requestedUser = await User.findById(req.params.id);
+        requestedUser.following.push(req.user.id);
+
         await userToAccept.save();
+        await requestedUser.save();
 
         res.json({ msg: 'Follower request accepted' });
 
@@ -301,3 +306,53 @@ module.exports.getUserStatus = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+
+module.exports.followingUserPosts = async (req, res) => {
+    try {
+  
+      const user = await User.findById(req.params.userId);
+  
+      // Check user exists
+      if (!user) {
+        return res.status(404).json({msg: 'User not found'});
+      }
+  
+      // Check if following
+      if(!req.user.following.includes(req.params.userId)) {
+        return res.status(403).json({msg: 'Not authorized to see posts'});
+      }
+  
+      const posts = await Post.find({postedBy: req.params.userId}); 
+  
+      res.json(posts);
+  
+    } catch(err) {
+      console.error(err);
+      res.status(500).send('Server Error'); 
+    }
+};
+
+
+module.exports.feed = async (req, res) => {
+    try {
+  
+      // Get logged in user
+      const user = await User.findById(req.user.id);
+  
+      // Array of users that current user follows
+      const following = user.following; 
+  
+      // Fetch posts of the users that current user follows
+      const posts = await Post.find({ 
+        postedBy: { $in: following } 
+      })
+      .sort({createdAt: -1}) // newest first
+      .populate('postedBy', 'id name profilePic');
+  
+      res.json(posts);
+  
+    } catch(err) {
+      console.error(err);
+      res.status(500).send('Server error');
+    }
+};  

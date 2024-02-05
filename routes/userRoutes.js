@@ -68,4 +68,8 @@ router.post('/users/reject-follower-request/:id', auth, usersCtrl.rejectFollower
 
 router.get('/users/status', auth, usersCtrl.getUserStatus);
 
+router.get('/users/:userId/posts', auth, usersCtrl.followingUserPosts);
+
+router.get('/users/feed', auth, usersCtrl.feed)
+
 module.exports = router;
