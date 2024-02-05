@@ -17,6 +17,7 @@ body {
     padding: 10px;
     width: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
 
 .navbar-left {
@@ -38,7 +39,10 @@ body {
 
 .container {
     margin: 20px auto; /* Adjusted container margins */
-    max-width: 1400px; /* Set maximum container width */
+    max-width: 100%; /* Set maximum container width */
+    padding-top: 80px;
+    max-height: 100vh;
+    overflow: auto; /* or overflow: hidden; */
 }
 
 .container-title {
@@ -114,4 +118,11 @@ input, textarea {
     border-radius: 50%;
     border: 2px solid #fff; /* Adjust the border color and thickness as needed */
     margin-right: 10px; /* Add some spacing between the image and text */
+}
+
+.user-status,
+.post,
+.follower-request {
+    overflow: auto; /* or overflow: hidden; */
+    max-height: 100vh;
 }

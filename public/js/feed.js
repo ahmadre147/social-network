@@ -14,11 +14,13 @@ function loadFeed() {
     .then(response => response.json())
     .then(data => {
         const feedContainer = document.getElementById('feed');
+        const headingContainer = document.getElementById('headingContainer');
 
+        // Clear previous content
         feedContainer.innerHTML = '';
 
+        // Iterate through the feed data and append posts
         data.forEach(post => {
-
             const postEl = document.createElement('div');
             postEl.className = 'feed-post';
             postEl.innerHTML = `
@@ -44,8 +46,15 @@ function loadFeed() {
 
             feedContainer.appendChild(postEl);
         });
+
+        // Set a maximum height for the feed container
+        feedContainer.style.maxHeight = '100vh'; // You can adjust this value
+
+        // Enable overflow and add a scrollbar
+        feedContainer.style.overflowY = 'auto';
     });
 }
+
 
 function showComments(postId) {
     const commentsContainer = document.getElementById(`comments-${postId}`);
