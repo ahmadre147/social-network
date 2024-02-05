@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Node.js service
+  nodejs:
+    image: node:18.19.0
+    container_name: FriendiFy
+    working_dir: /usr/src/app
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "3000:3000"
+    command: npm start
+
+  # MongoDB service
+  mongodb:
+    image: mongo:latest
+    container_name: FriendiFy-db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: adminpassword
+    volumes:
+      - ~/mongo/mongo_data:/data/db
+
+
+volumes:
+  mongodb_data:
+
